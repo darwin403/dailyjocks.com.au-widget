@@ -1,0 +1,22 @@
+.tooltip {
+  padding: 11px;
+  color: white;
+  font-size: 12px;
+  background-color: #212529;
+
+  .title {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .description {
+    color: #adb5bd;
+    margin-bottom: 0;
+  }
+
+  ul {
+    padding-left: 3px;
+    list-style: none;
+  }
+}
