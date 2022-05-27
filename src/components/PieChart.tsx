@@ -1,18 +1,31 @@
 import { useState } from "react";
 import { PieChart as RMPieChart } from "react-minimal-pie-chart";
 import MouseTooltip from "react-sticky-mouse-tooltip";
+import { stateData } from "../data";
 
 import styles from "./PieChart.module.scss";
 
 interface IProps {
-  data: { title: string; value: number; color: string; hoverColor: string }[];
+  data: {
+    title: string;
+    value: number;
+    color: string;
+    labelColor: string;
+  }[];
 }
 
-export const PieChart: React.FC<IProps> = (props) => {
+export const PieChart: React.FC<IProps> = ({ data }) => {
   const [activeIndex, setActiveIndex] = useState<number>();
-  const data = props.data.map((d, i) =>
-    i === activeIndex ? { ...d, color: d["hoverColor"] } : d
-  );
+
+  const getLabelStyle = (dataIndex: number) => ({
+    fontSize: "3px",
+    fontFamily: "Zurich ,'sans-serif'",
+    fill: data[dataIndex]["labelColor"],
+    opacity: 0.75,
+  });
+
+  const getSegmentShift = (dataIndex: number) =>
+    activeIndex !== undefined && dataIndex === activeIndex ? 2 : 1;
 
   return (
     <>
@@ -32,22 +45,12 @@ export const PieChart: React.FC<IProps> = (props) => {
       <RMPieChart
         label={({ dataEntry }) => dataEntry["title"]}
         data={data}
-        labelStyle={{
-          fontSize: "3px",
-          fontFamily: "Zurich ,'sans-serif'",
-          fill: "#212529",
-          opacity: 0.75,
-          pointerEvents: "none",
-        }}
-        segmentsShift={(index) =>
-          activeIndex !== undefined && index === activeIndex ? 2 : 1
-        }
+        labelStyle={getLabelStyle}
+        segmentsShift={getSegmentShift}
         radius={40}
         labelPosition={75}
-        lineWidth={50}
         animate={true}
-        segmentsStyle={{ transition: "stroke 500ms", cursor: "pointer" }}
-        style={{ height: "550px", padding: "10px" }}
+        style={{ maxHeight: "550px", padding: "10px", boxSizing: "border-box" }}
         onMouseOver={(_, i) => {
           setActiveIndex(i);
         }}

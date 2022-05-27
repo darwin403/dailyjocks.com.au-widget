@@ -1,0 +1,33 @@
+/********
+ * GRID *
+ ********/
+
+$smScreen-maxWidth: 1439px;
+$lgScreen-minWidth: 1440px;
+
+.container {
+  margin: 5em;
+  padding: 2em 0;
+
+  @media screen and (max-width: $smScreen-maxWidth) {
+    margin: 1em;
+    padding: 1em 0;
+  }
+}
+
+.row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+
+  @media screen and (max-width: $smScreen-maxWidth) {
+    flex-direction: column;
+  }
+}
+
+.column {
+  @media screen and (max-width: $smScreen-maxWidth) {
+    margin: 1em 0;
+  }
+}

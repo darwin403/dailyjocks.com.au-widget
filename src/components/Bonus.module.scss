@@ -1,34 +1,4 @@
-$smScreen-maxWidth: 1439px;
-$lgScreen-minWidth: 1440px;
-
-/********
- * GRID *
- ********/
-
-.container {
-  margin: 5em;
-
-  @media screen and (max-width: $smScreen-maxWidth) {
-    margin: 2em 1em;
-  }
-}
-
-.row {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: row;
-
-  @media screen and (max-width: $smScreen-maxWidth) {
-    flex-direction: column;
-  }
-}
-
-.column {
-  @media screen and (max-width: $smScreen-maxWidth) {
-    margin: 1em 0;
-  }
-}
+@import "./globals.scss";
 
 .header {
   font-size: 32px;
@@ -53,11 +23,9 @@ $lgScreen-minWidth: 1440px;
   z-index: 1;
 
   &:hover {
-    border: 1px solid #cad1d8;
-    box-shadow: 0px 4px 14px rgba(85, 85, 85, 0.25);
-    transform: scale(1.05);
-    transition: border ease-in 100ms, box-shadow ease-in 100ms,
-      transform ease-in 100ms;
+    box-shadow: 0px 2px 10px rgba(200, 200, 200, 0.726);
+    transform: scale(1.01);
+    transition: box-shadow 100ms, transform 100ms;
   }
 
   .wrapper {
@@ -100,10 +68,6 @@ $lgScreen-minWidth: 1440px;
 
   .underwear {
     max-width: 100%;
-    &:hover {
-      transform: scale(1.01);
-      transition: transform ease-in 0.2s;
-    }
   }
 
   .line {
