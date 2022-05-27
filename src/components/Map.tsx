@@ -8,6 +8,7 @@ import {
 } from "leaflet";
 import australiaGeoJson from "../data/australia.json";
 import { GeoJsonObject, Feature } from "geojson";
+import { useEffect } from "react";
 import {
   stateColors,
   stateLabelMarkers,
@@ -22,9 +23,11 @@ import "leaflet/dist/leaflet.css";
 import "./Map.scss";
 
 export function Map() {
+  const isDesktop = false; // window.innerWidth >= 1440;
   const geoJson = geoJSON(australiaGeoJson as GeoJsonObject);
+
   return (
-    <section id="map">
+    <section>
       <MapContainer
         bounds={geoJson.getBounds()}
         attributionControl={false}
@@ -35,9 +38,11 @@ export function Map() {
         scrollWheelZoom={false}
         keyboard={false}
         tap={false}
+        zoomSnap={0.1}
+        zoomDelta={0.2}
         style={{
-          height: "100%",
-          width: "100%",
+          height: "80vw",
+          maxHeight: "1000px",
         }}
       >
         {/* Australia Map */}
@@ -78,30 +83,33 @@ export function Map() {
         ))}
 
         {/* Popup Images */}
-        {topSellerMarkers.map((marker, i) => (
-          <Marker
-            position={marker.coords}
-            key={i}
-            icon={icon({
-              iconUrl: markerSVG(stateColors[marker["state"]]["hover"]),
-              iconAnchor: marker["iconAnchor"],
-              popupAnchor: marker["popupAnchor"],
-            })}
-          >
-            <Popup
-              className="topSellerPopup"
-              minWidth={200}
-              closeButton={false}
+        {!isDesktop &&
+          topSellerMarkers.map((marker, i) => (
+            <Marker
+              position={marker.coords}
+              key={i}
+              icon={icon({
+                iconUrl: markerSVG(stateColors[marker["state"]]["hover"]),
+                iconAnchor: marker["iconAnchor"],
+                popupAnchor: marker["popupAnchor"],
+              })}
             >
-              <div className="imgOverlay">
-                <img src={marker.imgSrc} alt="Top Seller" />
-              </div>
-              <div className="title">
-                {stateAcronym[marker.state]} - Top Seller
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+              <Popup
+                className="topSellerPopup"
+                minWidth={200}
+                closeButton={false}
+                closeOnClick={false}
+                autoClose={false}
+              >
+                <div className="imgOverlay">
+                  <img src={marker.imgSrc} alt="Top Seller" />
+                </div>
+                <div className="title">
+                  {stateAcronym[marker.state]} - Top Seller
+                </div>
+              </Popup>
+            </Marker>
+          ))}
       </MapContainer>
     </section>
   );

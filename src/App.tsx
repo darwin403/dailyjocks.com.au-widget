@@ -1,14 +1,15 @@
-import { Map, Chart, Header } from "./components";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Home } from "./pages";
 
 import "./App.css";
 
 function App() {
   return (
-    <>
-      <Header />
-      <Map />
-      <Chart />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
