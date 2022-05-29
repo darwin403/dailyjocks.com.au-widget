@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { PieChart as RMPieChart } from "react-minimal-pie-chart";
 import MouseTooltip from "react-sticky-mouse-tooltip";
-import { stateData } from "../data";
 
 import styles from "./PieChart.module.scss";
 

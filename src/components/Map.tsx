@@ -5,40 +5,56 @@ import {
   icon,
   PathOptions,
   GeoJSON as IGeoJSON,
+  Marker as IMarker,
 } from "leaflet";
 import australiaGeoJson from "../data/australia.json";
 import { GeoJsonObject, Feature } from "geojson";
-import { useEffect } from "react";
 import {
-  stateColors,
   stateLabelMarkers,
   IStateLabelMarker,
   topSellerMarkers,
+  ITopSellerMarker,
   stateAcronym,
-} from "../data/map";
+} from "../data";
 import ReactDOMServer from "react-dom/server";
 
 // eslint-disable-next-line
 import "leaflet/dist/leaflet.css";
 import "./Map.scss";
+import styles from "./Map.module.scss";
+import { useEffect, useRef } from "react";
+
+const isDesktop = window.innerWidth >= 1440;
 
 export function Map() {
-  const isDesktop = false; // window.innerWidth >= 1440;
   const geoJson = geoJSON(australiaGeoJson as GeoJsonObject);
 
   return (
     <section>
+      <div className={styles.container} style={{ marginBottom: 0 }}>
+        <div className={styles.row}>
+          <div className={styles.column}>
+            <header className={styles.header}>
+              <h1 className={styles.title}>Underwear Down Under</h1>
+              <h2 className={styles.subTitle}>
+                Data reveals The Jockstrap Capital of Australia & each states
+                underwear buying habits
+              </h2>
+            </header>
+          </div>
+        </div>
+      </div>
       <MapContainer
         bounds={geoJson.getBounds()}
         attributionControl={false}
         touchZoom={false}
-        dragging={false}
+        dragging={!isDesktop}
         doubleClickZoom={false}
         zoomControl={false}
         scrollWheelZoom={false}
         keyboard={false}
         tap={false}
-        zoomSnap={0.1}
+        zoomSnap={isDesktop ? 1 : 0.1}
         zoomDelta={0.2}
         style={{
           height: "80vw",
@@ -62,89 +78,117 @@ export function Map() {
 
             // hover effects
             layer.on("mouseover", (e) =>
-              layer.setStyle(stateStyleFunction("hover")(feature))
+              layer.setStyle(stateStyleFunction("hover"))
             );
             layer.on("mouseout", (e) =>
-              layer.setStyle(stateStyleFunction("base")(feature))
+              layer.setStyle(stateStyleFunction("base"))
             );
           }}
         />
 
         {/* State Labels */}
-        {stateLabelMarkers.map((marker, i) => (
+        {stateLabelMarkers.map((stateLabelMarker, i) => (
           <Marker
-            position={marker.coords}
+            position={stateLabelMarker.coords}
             key={i}
             icon={divIcon({
-              html: ReactDOMServer.renderToString(stateLabelsHTML(marker)),
+              html: ReactDOMServer.renderToString(
+                stateLabelsHTML(stateLabelMarker)
+              ),
               className: "",
             })}
           />
         ))}
 
         {/* Popup Images */}
-        {!isDesktop &&
-          topSellerMarkers.map((marker, i) => (
-            <Marker
-              position={marker.coords}
-              key={i}
-              icon={icon({
-                iconUrl: markerSVG(stateColors[marker["state"]]["hover"]),
-                iconAnchor: marker["iconAnchor"],
-                popupAnchor: marker["popupAnchor"],
-              })}
-            >
-              <Popup
-                className="topSellerPopup"
-                minWidth={200}
-                closeButton={false}
-                closeOnClick={false}
-                autoClose={false}
-              >
-                <div className="imgOverlay">
-                  <img src={marker.imgSrc} alt="Top Seller" />
-                </div>
-                <div className="title">
-                  {stateAcronym[marker.state]} - Top Seller
-                </div>
-              </Popup>
-            </Marker>
-          ))}
+        {topSellerMarkers.map((topSellerMarker, i) => (
+          <TopSellerMarker topSellerMarker={topSellerMarker} key={i} />
+        ))}
       </MapContainer>
     </section>
   );
 }
 
-const markerSVG = (fillColor: string) => {
+interface ITopSellerMarkerProps {
+  topSellerMarker: ITopSellerMarker;
+}
+
+const TopSellerMarker: React.FC<ITopSellerMarkerProps> = ({
+  topSellerMarker,
+}) => {
+  const markerRef = useRef<IMarker>(null);
+
+  useEffect(() => {
+    if (isDesktop && topSellerMarker.popupOpen) {
+      markerRef.current?.openPopup();
+    }
+  }, [topSellerMarker.popupOpen]);
+
   return (
-    "data:image/svg+xml," +
-    escape(
-      ReactDOMServer.renderToStaticMarkup(
-        <svg
-          width="30"
-          height="30"
-          viewBox="0 0 30 30"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <rect width="30" height="30" rx="15" fill={fillColor} />
-          <path
-            d="M14.1667 14.1667V9.16666H15.8333V14.1667H20.8333V15.8333H15.8333V20.8333H14.1667V15.8333H9.16666V14.1667H14.1667Z"
-            fill="white"
-          />
-        </svg>
-      )
-    )
+    <Marker
+      ref={markerRef}
+      position={topSellerMarker.coords}
+      icon={icon({
+        iconUrl: isDesktop
+          ? topSellerMarker["markerSrc"]
+          : "images/markers/marker.svg",
+        iconAnchor: isDesktop
+          ? topSellerMarker["iconAnchor"]
+          : topSellerMarker["smIconAnchor"],
+        popupAnchor: isDesktop
+          ? topSellerMarker["popupAnchor"]
+          : topSellerMarker["smPopupAnchor"],
+      })}
+    >
+      <GuessPopup topSellerMarker={topSellerMarker} />
+    </Marker>
   );
 };
 
-const stateStyleFunction =
-  (styleState: "base" | "hover") =>
-  (feature?: Feature): PathOptions => ({
-    color: "white",
-    fillColor: stateColors[feature?.properties?.["name"] as string][styleState],
-    fillOpacity: 1,
-  });
+interface IGuessPopup {
+  topSellerMarker: ITopSellerMarker;
+}
+
+const GuessPopup: React.FC<IGuessPopup> = ({ topSellerMarker }) => {
+  const blurRef = useRef<HTMLDivElement>(null);
+  return (
+    <Popup
+      className="topSellerPopup"
+      minWidth={170}
+      closeButton={false}
+      closeOnClick={!isDesktop}
+      autoClose={!isDesktop}
+    >
+      <div className="imgOverlay">
+        <img src={topSellerMarker.imgSrc} alt="Top Seller" />
+        <div
+          ref={blurRef}
+          className="blurOverlay"
+          style={topSellerMarker.blurStyle}
+          onClick={() => {
+            const divElement = blurRef.current;
+            if (!divElement) return;
+
+            // @ts-ignore
+            divElement.style.backdropFilter = "blur(0px)";
+            divElement.innerHTML = "";
+          }}
+        >
+          <img src="/images/question-mark.svg" alt="Guess" />
+        </div>
+      </div>
+      <div className="title">
+        {stateAcronym[topSellerMarker.state]} - Top Seller
+      </div>
+    </Popup>
+  );
+};
+
+const stateStyleFunction = (styleState: "base" | "hover"): PathOptions => ({
+  color: "white",
+  fillColor: styleState === "base" ? "#EEE6FD" : "#6521EA",
+  fillOpacity: 1,
+});
 
 const stateLabelsHTML = (marker: IStateLabelMarker) => (
   <div className="stateMarker">

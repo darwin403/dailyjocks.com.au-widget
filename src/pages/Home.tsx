@@ -1,10 +1,9 @@
-import { Map, Chart, Header, Bonus } from "../components";
+import { Map, Chart, Bonus } from "../components";
 
 export const Home = () => {
   return (
     <>
-      {/* <Header /> */}
-      {/* <Map /> */}
+      <Map />
       <Chart />
       <Bonus />
     </>
