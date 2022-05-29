@@ -31,7 +31,7 @@ export function Map() {
 
   return (
     <section>
-      <div className={styles.container} style={{ marginBottom: 0 }}>
+      <div className={styles.container} style={{ margin: 0 }}>
         <div className={styles.row}>
           <div className={styles.column}>
             <header className={styles.header}>
