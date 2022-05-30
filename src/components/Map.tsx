@@ -1,4 +1,5 @@
-import { MapContainer, GeoJSON, Popup, Marker } from "react-leaflet";
+import { MapContainer, GeoJSON, Popup, Marker, useMap } from "react-leaflet";
+import { useWindowSize } from "@react-hook/window-size";
 import {
   geoJSON,
   divIcon,
@@ -58,10 +59,15 @@ export function Map() {
         zoomSnap={isDesktop ? 1 : 0.1}
         zoomDelta={0.2}
         style={{
+          width: "100%",
           height: "80vw",
           maxHeight: "1000px",
         }}
+        // @ts-ignore
+        // ref={(map) => console.log(map?.invalidateSize())}
       >
+        <ResizeMapWindow />
+
         {/* Australia Map */}
         <GeoJSON
           data={geoJson.toGeoJSON()}
@@ -109,6 +115,23 @@ export function Map() {
     </section>
   );
 }
+
+// ! Not working when iframe width changes
+const ResizeMapWindow = () => {
+  const map = useMap();
+  const [windowWidth, windowHeight] = useWindowSize();
+
+  useEffect(() => {
+    // @ts-ignore
+    console.log(window.innerWidth);
+
+    setTimeout(() => {
+      map?.invalidateSize();
+    }, 400);
+  }, [windowWidth, windowHeight, map]);
+
+  return null;
+};
 
 interface ITopSellerMarkerProps {
   topSellerMarker: ITopSellerMarker;
