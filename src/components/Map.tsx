@@ -15,6 +15,7 @@ import {
   topSellerMarkers,
   ITopSellerMarker,
   stateAcronym,
+  toolTipData,
 } from "../data";
 import ReactDOMServer from "react-dom/server";
 
@@ -177,6 +178,10 @@ const GuessPopup: React.FC<IGuessPopup> = ({ topSellerMarker }) => {
           <img src="/images/question-mark.svg" alt="Guess" />
         </div>
       </div>
+      {topSellerMarker.state === "Victoria" && (
+        <img className="crown" src="/images/crown.svg" alt="Crown" />
+      )}
+
       <div className="title">
         {stateAcronym[topSellerMarker.state]} - Top Seller
       </div>
@@ -196,21 +201,25 @@ const stateLabelsHTML = (marker: IStateLabelMarker) => (
   </div>
 );
 
-const stateTooltipHTML = (feature: Feature) => (
-  <div className="stateTooltip">
-    <b className="title">{feature["properties"]?.name}</b>
-    <ul>
-      <li>
-        <span className="description">Preferred Style:</span> Trunk
-      </li>
-      <li>
-        <span className="description">Buys New Undies:</span> Every 106 days
-      </li>
-      <li>
-        <span className="description">Favorite Color:</span> Red
-      </li>
-    </ul>
-  </div>
-);
+const stateTooltipHTML = (feature: Feature) =>
+  feature["properties"]?.name && (
+    <div className="stateTooltip">
+      <b className="title">{feature["properties"].name}</b>
+      <ul>
+        <li>
+          <span className="description">Preferred Style:</span>{" "}
+          {toolTipData[feature["properties"].name]["preferredStyle"]}
+        </li>
+        <li>
+          <span className="description">Buys New Undies:</span> Every{" "}
+          {toolTipData[feature["properties"].name]["newUndies"]} days
+        </li>
+        <li>
+          <span className="description">Favorite Color:</span>{" "}
+          {toolTipData[feature["properties"].name]["favColor"]}
+        </li>
+      </ul>
+    </div>
+  );
 
 export default Map;

@@ -51,6 +51,53 @@ export const stateAcronym: IStateAcronym = {
   Tasmania: "TAS",
 };
 
+interface IToolTipData {
+  [key: string]: {
+    preferredStyle: string;
+    newUndies: string;
+    favColor: string;
+  };
+}
+
+export const toolTipData: IToolTipData = {
+  "South Australia": {
+    preferredStyle: "Trunks",
+    newUndies: "65",
+    favColor: "Bright Colors & Patterns",
+  },
+  "New South Wales": {
+    preferredStyle: "Briefs",
+    newUndies: "92",
+    favColor: "Light Blue & Pink",
+  },
+  "Australian Capital Territory": {
+    preferredStyle: "Briefs",
+    newUndies: "79",
+    favColor: "White",
+  },
+  Queensland: {
+    preferredStyle: "Briefs",
+    newUndies: "80",
+    favColor: "Neon & Navy",
+  },
+  "Northern Territory": {
+    preferredStyle: "Briefs",
+    newUndies: "131",
+    favColor: "Patterns",
+  },
+  "Western Australia": {
+    preferredStyle: "Trunks",
+    newUndies: "106",
+    favColor: "Red",
+  },
+  Victoria: {
+    preferredStyle: "Jockstraps",
+    newUndies: "90",
+    favColor: "Navy, Black & Bright Blue",
+  },
+  Tasmania: { preferredStyle: "Briefs", newUndies: "50", favColor: "Black" },
+};
+
 export interface ITopSellerMarker {
   state: string;
   coords: {
@@ -95,14 +142,14 @@ export const topSellerMarkers: ITopSellerMarker[] = [
   {
     state: "Northern Territory",
     coords: { lat: -15.453680224345835, lng: 135.96679687500003 },
-    imgSrc: "images/northern-territory.jpg",
+    imgSrc: "images/northern-territory.png",
     markerSrc: "images/markers/marker-nt.svg",
     popupOpen: true,
     popupAnchor: [-400, 120],
     iconAnchor: [300, 100],
     smPopupAnchor: [-120, 160],
     smIconAnchor: [14, 30],
-    blurStyle: { height: "110px", bottom: "48px" },
+    blurStyle: { height: "80px", bottom: "27px" },
   },
   {
     state: "Queensland",
@@ -114,19 +161,19 @@ export const topSellerMarkers: ITopSellerMarker[] = [
     iconAnchor: [200, 300],
     smPopupAnchor: [-150, 30],
     smIconAnchor: [50, 30],
-    blurStyle: { height: "70px", bottom: "40px" },
+    blurStyle: { height: "80px", bottom: "40px" },
   },
   {
     state: "Victoria",
     coords: { lat: -37.857507156252034, lng: 144.75585937500003 },
-    imgSrc: "images/victoria.jpg",
+    imgSrc: "images/victoria.png",
     markerSrc: "images/markers/marker-vic.svg",
     popupOpen: true,
     popupAnchor: [300, 150],
     iconAnchor: [-50, 30],
     smPopupAnchor: [0, -30],
     smIconAnchor: [14, 30],
-    blurStyle: { height: "110px", bottom: "40px" },
+    blurStyle: { height: "80px", bottom: "40px" },
   },
   {
     state: "Tasmania",
@@ -138,7 +185,7 @@ export const topSellerMarkers: ITopSellerMarker[] = [
     iconAnchor: [14, -30],
     smPopupAnchor: [0, -40],
     smIconAnchor: [0, 20],
-    blurStyle: { height: "60px", bottom: "35px" },
+    blurStyle: { height: "80px", bottom: "33px" },
   },
   {
     state: "Australian Capital Territory",
@@ -150,18 +197,18 @@ export const topSellerMarkers: ITopSellerMarker[] = [
     iconAnchor: [0, 0],
     smPopupAnchor: [-100, 0],
     smIconAnchor: [14, 0],
-    blurStyle: { height: "50px", bottom: "40px" },
+    blurStyle: { height: "80px", bottom: "35px" },
   },
   {
     state: "New South Wales",
     coords: { lat: -33.7243396617476, lng: 151.21582031250003 },
-    imgSrc: "images/new-south-wales.jpg",
+    imgSrc: "images/new-south-wales.png",
     markerSrc: "images/markers/marker-nsw.svg",
     popupOpen: true,
     popupAnchor: [175, -50],
     iconAnchor: [50, 200],
     smPopupAnchor: [-130, 80],
     smIconAnchor: [14, 30],
-    blurStyle: { height: "120px", bottom: "60px" },
+    blurStyle: { height: "85px", bottom: "30px" },
   },
 ];
