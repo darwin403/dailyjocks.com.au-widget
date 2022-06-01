@@ -60,11 +60,9 @@ export function Map() {
         zoomDelta={0.2}
         style={{
           width: "100%",
-          height: "80vw",
+          height: isDesktop ? "100vh" : "80vw",
           maxHeight: "1000px",
         }}
-        // @ts-ignore
-        // ref={(map) => console.log(map?.invalidateSize())}
       >
         <ResizeMapWindow />
 
@@ -122,9 +120,6 @@ const ResizeMapWindow = () => {
   const [windowWidth, windowHeight] = useWindowSize();
 
   useEffect(() => {
-    // @ts-ignore
-    console.log(window.innerWidth);
-
     setTimeout(() => {
       map?.invalidateSize();
     }, 400);
@@ -175,6 +170,7 @@ interface IGuessPopup {
 
 const GuessPopup: React.FC<IGuessPopup> = ({ topSellerMarker }) => {
   const blurRef = useRef<HTMLDivElement>(null);
+  const crownRef = useRef<HTMLImageElement>(null);
   return (
     <Popup
       className="topSellerPopup"
@@ -196,13 +192,26 @@ const GuessPopup: React.FC<IGuessPopup> = ({ topSellerMarker }) => {
             // @ts-ignore
             divElement.style.backdropFilter = "blur(0px)";
             divElement.innerHTML = "";
+
+            // show crown
+            const crownElement = crownRef.current;
+            if (!crownElement) return;
+
+            crownElement.style.display = "block";
+            crownElement.style.animation = "pop 0.3s linear 1";
           }}
         >
           <img src="/images/question-mark.svg" alt="Guess" />
         </div>
       </div>
       {topSellerMarker.state === "Victoria" && (
-        <img className="crown" src="/images/crown.svg" alt="Crown" />
+        <img
+          ref={crownRef}
+          className="crown"
+          src="/images/crown.svg"
+          alt="Crown"
+          style={{ display: "none" }}
+        />
       )}
 
       <div className="title">
