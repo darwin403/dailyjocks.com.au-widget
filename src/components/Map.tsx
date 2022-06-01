@@ -60,7 +60,7 @@ export function Map() {
         zoomDelta={0.2}
         style={{
           width: "100%",
-          height: isDesktop ? "100vh" : "80vw",
+          height: "80vw",
           maxHeight: "1000px",
         }}
       >
