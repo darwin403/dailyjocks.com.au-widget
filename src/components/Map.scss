@@ -147,6 +147,7 @@
       backdrop-filter: blur(25px);
       left: 0;
       z-index: 1;
+      transition: backdrop-filter ease-out 1s;
 
       img {
         height: 100%;

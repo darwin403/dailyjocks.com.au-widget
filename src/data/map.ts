@@ -105,12 +105,22 @@ export interface ITopSellerMarker {
     lng: number;
   };
   imgSrc: string;
-  markerSrc: string;
+  markerSrc: {
+    lg: string;
+    md: string;
+    sm: string;
+  };
   popupOpen: boolean;
-  popupAnchor: PointExpression;
-  iconAnchor: PointExpression;
-  smPopupAnchor: PointExpression;
-  smIconAnchor: PointExpression;
+  popupAnchor: {
+    lg: PointExpression;
+    md: PointExpression;
+    sm: PointExpression;
+  };
+  iconAnchor: {
+    lg: PointExpression;
+    md?: PointExpression;
+    sm: PointExpression;
+  };
   blurStyle: React.CSSProperties;
 }
 
@@ -118,97 +128,179 @@ export const topSellerMarkers: ITopSellerMarker[] = [
   {
     state: "South Australia",
     coords: { lat: -32.842673631954305, lng: 137.81250000000003 },
-    imgSrc: "images/south-australia.jpg",
-    markerSrc: "images/markers/marker-sa.svg",
+    imgSrc: "images/models/south-australia.jpg",
+    markerSrc: {
+      lg: "images/markers/south-australia-lg.svg",
+      md: "images/markers/south-australia-md.svg",
+      sm: "images/markers/default.svg",
+    },
     popupOpen: true,
-    popupAnchor: [-300, 250],
-    iconAnchor: [250, 50],
-    smPopupAnchor: [-120, 0],
-    smIconAnchor: [14, 30],
+    popupAnchor: {
+      lg: [-300, 250],
+      md: [-200, 270],
+      sm: [-120, 0],
+    },
+    iconAnchor: {
+      lg: [250, 50],
+      md: [150, 25],
+      sm: [14, 30],
+    },
     blurStyle: { height: "80px", bottom: "40px" },
   },
   {
     state: "Western Australia",
     coords: { lat: -31.57853542647338, lng: 115.66406250000001 },
-    imgSrc: "images/western-australia.png",
-    markerSrc: "images/markers/marker-wa.svg",
+    imgSrc: "images/models/western-australia.png",
+    markerSrc: {
+      lg: "images/markers/western-australia-lg.svg",
+      md: "images/markers/western-australia-md.svg",
+      sm: "images/markers/default.svg",
+    },
     popupOpen: true,
-    popupAnchor: [-120, 120],
-    iconAnchor: [20, 50],
-    smPopupAnchor: [100, 30],
-    smIconAnchor: [14, 30],
+    popupAnchor: {
+      lg: [-120, 120],
+      md: [-120, 120],
+      sm: [100, 30],
+    },
+    iconAnchor: {
+      lg: [20, 50],
+      md: [25, 50],
+      sm: [14, 30],
+    },
     blurStyle: { height: "90px", bottom: "55px" },
   },
   {
     state: "Northern Territory",
     coords: { lat: -15.453680224345835, lng: 135.96679687500003 },
-    imgSrc: "images/northern-territory.png",
-    markerSrc: "images/markers/marker-nt.svg",
+    imgSrc: "images/models/northern-territory.png",
+    markerSrc: {
+      lg: "images/markers/northern-territory-lg.svg",
+      md: "images/markers/northern-territory-md.svg",
+      sm: "images/markers/default.svg",
+    },
     popupOpen: true,
-    popupAnchor: [-400, 120],
-    iconAnchor: [300, 100],
-    smPopupAnchor: [-120, 160],
-    smIconAnchor: [14, 30],
+    popupAnchor: {
+      lg: [-400, 120],
+      md: [-280, 120],
+      sm: [-120, 160],
+    },
+    iconAnchor: {
+      lg: [300, 100],
+      md: [175, 80],
+      sm: [14, 30],
+    },
     blurStyle: { height: "80px", bottom: "27px" },
   },
   {
     state: "Queensland",
     coords: { lat: -25.324166525738384, lng: 152.66601562500003 },
-    imgSrc: "images/queensland.png",
-    markerSrc: "images/markers/marker-queensland.svg",
+    imgSrc: "images/models/queensland.png",
+    markerSrc: {
+      lg: "images/markers/queensland-lg.svg",
+      md: "images/markers/queensland-md.svg",
+      sm: "images/markers/default.svg",
+    },
     popupOpen: true,
-    popupAnchor: [50, -120],
-    iconAnchor: [200, 300],
-    smPopupAnchor: [-150, 30],
-    smIconAnchor: [50, 30],
+    popupAnchor: {
+      lg: [50, -120],
+      md: [55, -80],
+      sm: [-150, 30],
+    },
+    iconAnchor: {
+      lg: [200, 300],
+      md: [150, 200],
+      sm: [50, 30],
+    },
+
     blurStyle: { height: "80px", bottom: "40px" },
   },
   {
     state: "Victoria",
     coords: { lat: -37.857507156252034, lng: 144.75585937500003 },
-    imgSrc: "images/victoria.png",
-    markerSrc: "images/markers/marker-vic.svg",
+    imgSrc: "images/models/victoria.png",
+    markerSrc: {
+      lg: "images/markers/victoria-lg.svg",
+      md: "images/markers/victoria-md.svg",
+      sm: "images/markers/default.svg",
+    },
     popupOpen: true,
-    popupAnchor: [300, 150],
-    iconAnchor: [-50, 30],
-    smPopupAnchor: [0, -30],
-    smIconAnchor: [14, 30],
+    popupAnchor: {
+      lg: [300, 150],
+      md: [200, 185],
+      sm: [0, -30],
+    },
+    iconAnchor: {
+      lg: [-50, 30],
+      md: [-10, 10],
+      sm: [14, 30],
+    },
+
     blurStyle: { height: "80px", bottom: "40px" },
   },
   {
     state: "Tasmania",
     coords: { lat: -41.57596410238255, lng: 147.04101562500003 },
-    imgSrc: "images/tasmania.png",
-    markerSrc: "images/markers/marker.svg",
+    imgSrc: "images/models/tasmania.png",
+    markerSrc: {
+      lg: "images/markers/default.svg",
+      md: "images/markers/default.svg",
+      sm: "images/markers/default.svg",
+    },
     popupOpen: false,
-    popupAnchor: [-130, 50],
-    iconAnchor: [14, -30],
-    smPopupAnchor: [0, -40],
-    smIconAnchor: [0, 20],
+    popupAnchor: {
+      lg: [-130, 50],
+      md: [-130, 50],
+      sm: [0, -40],
+    },
+    iconAnchor: {
+      lg: [14, -30],
+      md: [14, -30],
+      sm: [0, 20],
+    },
     blurStyle: { height: "80px", bottom: "33px" },
   },
   {
     state: "Australian Capital Territory",
     coords: { lat: -35.38904996691167, lng: 149.01855468750003 },
-    imgSrc: "images/australian-capital-territory.png",
-    markerSrc: "images/markers/marker.svg",
+    imgSrc: "images/models/australian-capital-territory.png",
+    markerSrc: {
+      lg: "images/markers/default.svg",
+      md: "images/markers/default.svg",
+      sm: "images/markers/default.svg",
+    },
     popupOpen: false,
-    popupAnchor: [-100, -25],
-    iconAnchor: [0, 0],
-    smPopupAnchor: [-100, 0],
-    smIconAnchor: [14, 0],
+    popupAnchor: {
+      lg: [-100, -25],
+      md: [-100, -25],
+      sm: [-100, 0],
+    },
+    iconAnchor: {
+      lg: [0, 0],
+      md: [0, 0],
+      sm: [14, 0],
+    },
     blurStyle: { height: "80px", bottom: "35px" },
   },
   {
     state: "New South Wales",
     coords: { lat: -33.7243396617476, lng: 151.21582031250003 },
-    imgSrc: "images/new-south-wales.png",
-    markerSrc: "images/markers/marker-nsw.svg",
+    imgSrc: "images/models/new-south-wales.png",
+    markerSrc: {
+      lg: "images/markers/new-south-wales-lg.svg",
+      md: "images/markers/new-south-wales-md.svg",
+      sm: "images/markers/default.svg",
+    },
     popupOpen: true,
-    popupAnchor: [175, -50],
-    iconAnchor: [50, 200],
-    smPopupAnchor: [-130, 80],
-    smIconAnchor: [14, 30],
+    popupAnchor: {
+      lg: [175, -50],
+      md: [130, 25],
+      sm: [-130, 80],
+    },
+    iconAnchor: {
+      lg: [50, 200],
+      md: [50, 100],
+      sm: [14, 30],
+    },
     blurStyle: { height: "85px", bottom: "30px" },
   },
 ];

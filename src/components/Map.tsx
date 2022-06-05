@@ -1,5 +1,4 @@
-import { MapContainer, GeoJSON, Popup, Marker, useMap } from "react-leaflet";
-import { useWindowSize } from "@react-hook/window-size";
+import { MapContainer, GeoJSON, Popup, Marker } from "react-leaflet";
 import {
   geoJSON,
   divIcon,
@@ -26,7 +25,12 @@ import "./Map.scss";
 import styles from "./Map.module.scss";
 import { useEffect, useRef } from "react";
 
-const isDesktop = window.innerWidth >= 1440;
+const deviceWidth =
+  window.innerWidth >= 1440
+    ? "lg"
+    : window.innerWidth < 1440 && window.innerWidth >= 1024
+    ? "md"
+    : "sm";
 
 export function Map() {
   const geoJson = geoJSON(australiaGeoJson as GeoJsonObject);
@@ -50,13 +54,13 @@ export function Map() {
         bounds={geoJson.getBounds()}
         attributionControl={false}
         touchZoom={false}
-        dragging={!isDesktop}
+        dragging={deviceWidth === "sm"}
         doubleClickZoom={false}
         zoomControl={false}
         scrollWheelZoom={false}
         keyboard={false}
         tap={false}
-        zoomSnap={isDesktop ? 1 : 0.1}
+        zoomSnap={deviceWidth === "sm" ? 0.1 : deviceWidth === "md" ? 1.5 : 0.1}
         zoomDelta={0.2}
         style={{
           width: "100%",
@@ -64,8 +68,6 @@ export function Map() {
           maxHeight: "1000px",
         }}
       >
-        <ResizeMapWindow />
-
         {/* Australia Map */}
         <GeoJSON
           data={geoJson.toGeoJSON()}
@@ -114,20 +116,6 @@ export function Map() {
   );
 }
 
-// ! Not working when iframe width changes
-const ResizeMapWindow = () => {
-  const map = useMap();
-  const [windowWidth, windowHeight] = useWindowSize();
-
-  useEffect(() => {
-    setTimeout(() => {
-      map?.invalidateSize();
-    }, 400);
-  }, [windowWidth, windowHeight, map]);
-
-  return null;
-};
-
 interface ITopSellerMarkerProps {
   topSellerMarker: ITopSellerMarker;
 }
@@ -138,7 +126,7 @@ const TopSellerMarker: React.FC<ITopSellerMarkerProps> = ({
   const markerRef = useRef<IMarker>(null);
 
   useEffect(() => {
-    if (isDesktop && topSellerMarker.popupOpen) {
+    if (deviceWidth !== "sm" && topSellerMarker.popupOpen) {
       markerRef.current?.openPopup();
     }
   }, [topSellerMarker.popupOpen]);
@@ -148,15 +136,9 @@ const TopSellerMarker: React.FC<ITopSellerMarkerProps> = ({
       ref={markerRef}
       position={topSellerMarker.coords}
       icon={icon({
-        iconUrl: isDesktop
-          ? topSellerMarker["markerSrc"]
-          : "images/markers/marker.svg",
-        iconAnchor: isDesktop
-          ? topSellerMarker["iconAnchor"]
-          : topSellerMarker["smIconAnchor"],
-        popupAnchor: isDesktop
-          ? topSellerMarker["popupAnchor"]
-          : topSellerMarker["smPopupAnchor"],
+        iconUrl: topSellerMarker.markerSrc[deviceWidth],
+        popupAnchor: topSellerMarker.popupAnchor[deviceWidth],
+        iconAnchor: topSellerMarker.iconAnchor[deviceWidth],
       })}
     >
       <GuessPopup topSellerMarker={topSellerMarker} />
@@ -176,8 +158,8 @@ const GuessPopup: React.FC<IGuessPopup> = ({ topSellerMarker }) => {
       className="topSellerPopup"
       minWidth={170}
       closeButton={false}
-      closeOnClick={!isDesktop}
-      autoClose={!isDesktop}
+      closeOnClick={deviceWidth === "sm"}
+      autoClose={deviceWidth === "sm"}
     >
       <div className="imgOverlay">
         <img src={topSellerMarker.imgSrc} alt="Top Seller" />
