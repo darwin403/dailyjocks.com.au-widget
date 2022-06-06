@@ -43,10 +43,31 @@ export function Map() {
             <header className={styles.header}>
               <h1 className={styles.title}>Underwear Down Under</h1>
               <h2 className={styles.subTitle}>
-                Data reveals The Jockstrap Capital of Australia & each states
+                Data reveals The Jockstrap Capital of Australia & each state's
                 underwear buying habits
               </h2>
             </header>
+
+            <div className={styles.description}>
+              <p>
+                Here at DailyJocks, we’re never afraid to set tongues wagging.
+                On top of that, we love to celebrate the different types of
+                underwear from Boxers to G-Strings and everything in between -
+                we’ve got undies to suit every mood. All sexualities and gender
+                identities are celebrated at DailyJocks, so we decided to leave
+                no stone unturned when deep diving into your purchasing habits.
+                That’s why we’re bringing you our interactive map lifting the
+                lid on the eyebrow-raising underwear buys from Aussies.
+              </p>
+              <p>
+                From what kinds of undies are your favourite to how often you’re
+                buying new pairs, the results are as surprising as they are
+                saucy. Ever wondered which state is the jockstrap capital of
+                Australia? Click on the question marks in each state to reveal
+                all. After all, why keep these conversations to the bedroom when
+                they’re just as fun when discussed by the office water cooler?
+              </p>
+            </div>
           </div>
         </div>
       </div>

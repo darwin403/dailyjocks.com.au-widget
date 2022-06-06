@@ -2,7 +2,9 @@
 
 .leaflet-container {
   background-color: inherit;
-  font-family: "Zurich", "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-family: "Zurich", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Ubuntu, Helvetica Neue, sans-serif, Apple Color Emoji, Segoe UI Emoji,
+    Segoe UI Symbol;
 }
 
 .leaflet-interactive {

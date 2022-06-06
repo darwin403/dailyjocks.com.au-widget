@@ -12,11 +12,11 @@ export function Chart() {
               Which state buys new underwear most often?
             </h1>
             <p className={styles.description}>
-              Tasmanian guys are taking the lead in the Australian underwear
-              rankings buying new undies every 50 days! With those in the
+              Tasmanian's are taking the lead in the Australian underwear
+              rankings, buying new undies every 50 days! Meanwhile, those in the
               Northern Territory falling behind with new undies being delivered
-              every 131 days. We might be biased but with the humidity in the
-              top end we think this needs to be improved!
+              every 131 days. We might be biased, but with the humidity in the
+              top end, we think this needs to be improved!
             </p>
             <PieChart data={stateData} />
           </div>

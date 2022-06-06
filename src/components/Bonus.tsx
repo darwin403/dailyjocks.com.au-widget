@@ -5,13 +5,13 @@ const cardData = [
   {
     title: "69 Days",
     iconSrc: "/images/recycle-icon.svg",
-    description: "Australian guys who wear Briefs buy new undies most often.",
+    description: "Australians' who wear Briefs buy new undies most often.",
   },
   {
     title: "292 Days",
     iconSrc: "/images/calendar-icon.svg",
     description:
-      "Guys who wear trunks & live in the ACT purchase new undies the least, with new jocks being delivered every 292 days.",
+      "Australians' who wear trunks & live in the ACT purchase new undies the least, with new jocks being delivered every 292 days.",
   },
   {
     title: "3rd Order",
@@ -36,7 +36,7 @@ const Card: React.FC<ICardProps> = ({ title, iconSrc, description }) => {
     <div className={styles.card}>
       <div className={styles.wrapper}>
         <div className={styles.icon}>
-          <img src={iconSrc} />
+          <img src={iconSrc} alt="Icon" />
         </div>
         <div className={styles.content}>
           <h3 className={styles.title}>{title}</h3>
@@ -55,6 +55,12 @@ export const Bonus = () => {
         <div className={styles.row}>
           <div className={styles.column}>
             <h1 className={styles.header}>Bonus Underwear Facts</h1>
+            <div className={styles.description}>
+              Keen for more info you never knew you needed on Aussies’
+              underwear? Keep reading to get the nitty-gritty on all of our
+              dirty little secrets. They’re almost too cheeky (pun intended) to
+              be true.
+            </div>
           </div>
         </div>
       </div>
@@ -103,7 +109,7 @@ export const Bonus = () => {
               />
               <img
                 src="/images/underwear.webp"
-                alt="Underwear Image"
+                alt="Underwear Model"
                 className={styles.underwear}
               />
               <img

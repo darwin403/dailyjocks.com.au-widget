@@ -16,5 +16,15 @@
   margin: 0;
   font-weight: normal;
   font-size: 20px;
-  font-family: "Zurich", sans-serif;
+}
+
+.description {
+  margin: 5em 2em;
+  max-width: 1024px;
+  text-align: center;
+
+  @media screen and (min-width: $lgScreen-minWidth) {
+    margin-left: 5em;
+    margin-right: 5em;
+  }
 }
