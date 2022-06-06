@@ -11,7 +11,7 @@ const cardData = [
     title: "292 Days",
     iconSrc: "/images/calendar-icon.svg",
     description:
-      "Australians' who wear trunks & live in the ACT purchase new undies the least, with new jocks being delivered every 292 days.",
+      "People who wear trunks & live in the ACT purchase new undies the least, with new jocks being delivered every 292 days.",
   },
   {
     title: "3rd Order",
