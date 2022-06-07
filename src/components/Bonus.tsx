@@ -55,11 +55,10 @@ export const Bonus = () => {
         <div className={styles.row}>
           <div className={styles.column}>
             <h1 className={styles.header}>Bonus Underwear Facts</h1>
-            <div className={styles.description}>
+            <div className={styles.subtitle}>
               Keen for more info you never knew you needed on Aussies’
               underwear? Keep reading to get the nitty-gritty on all of our
-              dirty little secrets. They’re almost too cheeky (pun intended) to
-              be true.
+              dirty little secrets. They’re almost too cheeky to be true.
             </div>
           </div>
         </div>
