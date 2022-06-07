@@ -5,7 +5,7 @@ const cardData = [
   {
     title: "69 Days",
     iconSrc: "/images/recycle-icon.svg",
-    description: "Australians' who wear Briefs buy new undies most often.",
+    description: "Australians who wear briefs buy new undies most often.",
   },
   {
     title: "292 Days",
@@ -22,7 +22,7 @@ const cardData = [
     title: "2 Pairs",
     iconSrc: "/images/trunks-icon.svg",
     description:
-      "Jockstrap wearers buy the most when shopping for new undies. (Double the amount Trunk wearers buy).",
+      "Jockstrap wearers buy the most when shopping for new undies (double the amount Trunk wearers buy).",
   },
 ];
 

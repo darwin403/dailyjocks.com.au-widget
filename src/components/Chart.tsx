@@ -12,7 +12,7 @@ export function Chart() {
               Which state buys new underwear most often?
             </h1>
             <p className={styles.description}>
-              Tasmanian's are taking the lead in the Australian underwear
+              Tasmanians are taking the lead in the Australian underwear
               rankings, buying new undies every 50 days! Meanwhile, those in the
               Northern Territory falling behind with new undies being delivered
               every 131 days. We might be biased, but with the humidity in the
@@ -27,10 +27,10 @@ export function Chart() {
             </h1>
             <p className={styles.description}>
               Second place isn't bad, Australia. Much better than some countries
-              (we're looking at you, New Zealand) Don't worry if you aren't
+              (we're looking at you, New Zealand) don't worry if you aren't
               buying new jocks as often as everyone else on the list, we have a
-              huge range of underwear with Free Shipping Australia wide (so no
-              more excuses NT!)
+              huge range of underwear with free shipping Australia wide (so no
+              more excuses NT!).
             </p>
             <PieChart data={countryData} />
           </div>
