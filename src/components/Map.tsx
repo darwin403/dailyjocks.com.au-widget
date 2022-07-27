@@ -112,7 +112,7 @@ const LeafletMap = () => {
   // Note: A hacky way for responsive map since react-leaflet doesn't support dynamic style width:
   // https://github.com/PaulLeCam/react-leaflet/blob/9808c02566599f6d336efb0f762916888dcd5883/packages/react-leaflet/src/MapContainer.tsx#L83
 
-  if (invalidateMap) return null;
+  if (invalidateMap) return <div style={{ height: "80vw" }} />;
 
   return (
     <MapContainer
