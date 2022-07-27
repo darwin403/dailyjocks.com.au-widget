@@ -1,4 +1,11 @@
-import { MapContainer, GeoJSON, Popup, Marker } from "react-leaflet";
+import {
+  MapContainer,
+  GeoJSON,
+  Popup,
+  Marker,
+  useMap,
+  useMapEvent,
+} from "react-leaflet";
 import {
   geoJSON,
   divIcon,
@@ -23,18 +30,28 @@ import ReactDOMServer from "react-dom/server";
 import "leaflet/dist/leaflet.css";
 import "./Map.scss";
 import styles from "./Map.module.scss";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useWindowWidth } from "@react-hook/window-size";
 
-const deviceWidth =
-  window.innerWidth >= 1440
-    ? "lg"
-    : window.innerWidth < 1440 && window.innerWidth >= 1024
-    ? "md"
-    : "sm";
+const useDeviceType = () => {
+  const [deviceType, setDeviceType] = useState<"sm" | "md" | "lg">("sm");
+  const windowWidth = useWindowWidth();
+
+  useEffect(() => {
+    const newDeviceType =
+      window.innerWidth >= 1440
+        ? "lg"
+        : window.innerWidth < 1440 && window.innerWidth >= 1024
+        ? "md"
+        : "sm";
+
+    setDeviceType(newDeviceType);
+  }, [windowWidth]);
+
+  return deviceType;
+};
 
 export function Map() {
-  const geoJson = geoJSON(australiaGeoJson as GeoJsonObject);
-
   return (
     <section>
       <div className={styles.container} style={{ margin: 0 }}>
@@ -71,71 +88,97 @@ export function Map() {
           </div>
         </div>
       </div>
-      <MapContainer
-        bounds={geoJson.getBounds()}
-        attributionControl={false}
-        touchZoom={false}
-        dragging={deviceWidth === "sm"}
-        doubleClickZoom={false}
-        zoomControl={false}
-        scrollWheelZoom={false}
-        keyboard={false}
-        tap={false}
-        zoomSnap={deviceWidth === "sm" ? 0.1 : deviceWidth === "md" ? 1.5 : 0.1}
-        zoomDelta={0.2}
-        style={{
-          width: "100%",
-          height: "80vw",
-          maxHeight: "1000px",
-        }}
-      >
-        {/* Australia Map */}
-        <GeoJSON
-          data={geoJson.toGeoJSON()}
-          style={stateStyleFunction("base")}
-          onEachFeature={(feature, layer: IGeoJSON) => {
-            // State Tooltip
-            layer.bindTooltip(
-              ReactDOMServer.renderToString(stateTooltipHTML(feature)),
-              {
-                offset: [16, 0],
-                opacity: 1,
-                sticky: true,
-              }
-            );
-
-            // hover effects
-            layer.on("mouseover", (e) =>
-              layer.setStyle(stateStyleFunction("hover"))
-            );
-            layer.on("mouseout", (e) =>
-              layer.setStyle(stateStyleFunction("base"))
-            );
-          }}
-        />
-
-        {/* State Labels */}
-        {stateLabelMarkers.map((stateLabelMarker, i) => (
-          <Marker
-            position={stateLabelMarker.coords}
-            key={i}
-            icon={divIcon({
-              html: ReactDOMServer.renderToString(
-                stateLabelsHTML(stateLabelMarker)
-              ),
-              className: "",
-            })}
-          />
-        ))}
-
-        {/* Popup Images */}
-        {topSellerMarkers.map((topSellerMarker, i) => (
-          <TopSellerMarker topSellerMarker={topSellerMarker} key={i} />
-        ))}
-      </MapContainer>
+      <LeafletMap />
     </section>
   );
 }
+
+const LeafletMap = () => {
+  const geoJson = geoJSON(australiaGeoJson as GeoJsonObject);
+  const windowWidth = useWindowWidth();
+  const deviceType = useDeviceType();
+  const [invalidateMap, setInvalidateMap] = useState(true);
+
+  console.log("invalidateMap:", invalidateMap);
+
+  useEffect(() => {
+    setInvalidateMap(true);
+
+    setTimeout(() => {
+      setInvalidateMap(false);
+    }, 100);
+  }, [windowWidth]);
+
+  // Note: A hacky way for responsive map since react-leaflet doesn't support dynamic style width:
+  // https://github.com/PaulLeCam/react-leaflet/blob/9808c02566599f6d336efb0f762916888dcd5883/packages/react-leaflet/src/MapContainer.tsx#L83
+
+  if (invalidateMap) return null;
+
+  return (
+    <MapContainer
+      bounds={geoJson.getBounds()}
+      attributionControl={false}
+      touchZoom={false}
+      dragging={deviceType === "sm"}
+      doubleClickZoom={false}
+      zoomControl={false}
+      scrollWheelZoom={false}
+      keyboard={false}
+      tap={false}
+      zoomSnap={deviceType === "sm" ? 0.1 : deviceType === "md" ? 1.5 : 0.1}
+      zoomDelta={0.2}
+      style={{
+        width: "100%",
+        height: "80vw",
+        maxHeight: "1000px",
+      }}
+    >
+      {/* Australia Map */}
+      <GeoJSON
+        data={geoJson.toGeoJSON()}
+        style={stateStyleFunction("base")}
+        onEachFeature={(feature, layer: IGeoJSON) => {
+          // State Tooltip
+          layer.bindTooltip(
+            ReactDOMServer.renderToString(stateTooltipHTML(feature)),
+            {
+              offset: [16, 0],
+              opacity: 1,
+              sticky: true,
+            }
+          );
+
+          // hover effects
+          layer.on("mouseover", (e) =>
+            layer.setStyle(stateStyleFunction("hover"))
+          );
+          layer.on("mouseout", (e) =>
+            layer.setStyle(stateStyleFunction("base"))
+          );
+        }}
+      />
+
+      {/* State Labels */}
+      {stateLabelMarkers.map((stateLabelMarker, i) => (
+        <Marker
+          position={stateLabelMarker.coords}
+          key={i}
+          icon={divIcon({
+            html: ReactDOMServer.renderToString(
+              stateLabelsHTML(stateLabelMarker)
+            ),
+            className: "",
+          })}
+        />
+      ))}
+
+      {/* Popup Images */}
+      {topSellerMarkers.map((topSellerMarker, i) => (
+        <TopSellerMarker topSellerMarker={topSellerMarker} key={i} />
+      ))}
+    </MapContainer>
+  );
+};
 
 interface ITopSellerMarkerProps {
   topSellerMarker: ITopSellerMarker;
@@ -145,21 +188,23 @@ const TopSellerMarker: React.FC<ITopSellerMarkerProps> = ({
   topSellerMarker,
 }) => {
   const markerRef = useRef<IMarker>(null);
+  const deviceType = useDeviceType();
 
   useEffect(() => {
-    if (deviceWidth !== "sm" && topSellerMarker.popupOpen) {
+    if (true) {
+      console.log("markerRef.current?:", markerRef.current);
       markerRef.current?.openPopup();
     }
-  }, [topSellerMarker.popupOpen]);
+  }, [topSellerMarker.popupOpen, deviceType]);
 
   return (
     <Marker
       ref={markerRef}
       position={topSellerMarker.coords}
       icon={icon({
-        iconUrl: topSellerMarker.markerSrc[deviceWidth],
-        popupAnchor: topSellerMarker.popupAnchor[deviceWidth],
-        iconAnchor: topSellerMarker.iconAnchor[deviceWidth],
+        iconUrl: topSellerMarker.markerSrc[deviceType],
+        popupAnchor: topSellerMarker.popupAnchor[deviceType],
+        iconAnchor: topSellerMarker.iconAnchor[deviceType],
       })}
     >
       <GuessPopup topSellerMarker={topSellerMarker} />
@@ -174,13 +219,15 @@ interface IGuessPopup {
 const GuessPopup: React.FC<IGuessPopup> = ({ topSellerMarker }) => {
   const blurRef = useRef<HTMLDivElement>(null);
   const crownRef = useRef<HTMLImageElement>(null);
+  const deviceType = useDeviceType();
+
   return (
     <Popup
       className="topSellerPopup"
       minWidth={170}
       closeButton={false}
-      closeOnClick={deviceWidth === "sm"}
-      autoClose={deviceWidth === "sm"}
+      closeOnClick={deviceType === "sm"}
+      autoClose={deviceType === "sm"}
     >
       <div className="imgOverlay">
         <img src={topSellerMarker.imgSrc} alt="Top Seller" />
