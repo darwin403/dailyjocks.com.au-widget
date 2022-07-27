@@ -1,11 +1,4 @@
-import {
-  MapContainer,
-  GeoJSON,
-  Popup,
-  Marker,
-  useMap,
-  useMapEvent,
-} from "react-leaflet";
+import { MapContainer, GeoJSON, Popup, Marker } from "react-leaflet";
 import {
   geoJSON,
   divIcon,
@@ -30,7 +23,7 @@ import ReactDOMServer from "react-dom/server";
 import "leaflet/dist/leaflet.css";
 import "./Map.scss";
 import styles from "./Map.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import { useWindowWidth } from "@react-hook/window-size";
 
 const useDeviceType = () => {
@@ -98,8 +91,6 @@ const LeafletMap = () => {
   const windowWidth = useWindowWidth();
   const deviceType = useDeviceType();
   const [invalidateMap, setInvalidateMap] = useState(true);
-
-  console.log("invalidateMap:", invalidateMap);
 
   useEffect(() => {
     setInvalidateMap(true);
@@ -187,15 +178,14 @@ interface ITopSellerMarkerProps {
 const TopSellerMarker: React.FC<ITopSellerMarkerProps> = ({
   topSellerMarker,
 }) => {
-  const markerRef = useRef<IMarker>(null);
+  const markerRef = createRef<IMarker>();
   const deviceType = useDeviceType();
 
   useEffect(() => {
-    if (true) {
-      console.log("markerRef.current?:", markerRef.current);
+    if (deviceType !== "sm" && topSellerMarker.popupOpen) {
       markerRef.current?.openPopup();
     }
-  }, [topSellerMarker.popupOpen, deviceType]);
+  }, [topSellerMarker.popupOpen, deviceType, markerRef]);
 
   return (
     <Marker
@@ -217,9 +207,15 @@ interface IGuessPopup {
 }
 
 const GuessPopup: React.FC<IGuessPopup> = ({ topSellerMarker }) => {
-  const blurRef = useRef<HTMLDivElement>(null);
-  const crownRef = useRef<HTMLImageElement>(null);
-  const deviceType = useDeviceType();
+  const blurRef = createRef<HTMLDivElement>();
+  const crownRef = createRef<HTMLImageElement>();
+  // since hook is not forcing render of popup
+  const deviceType =
+    window.innerWidth >= 1440
+      ? "lg"
+      : window.innerWidth < 1440 && window.innerWidth >= 1024
+      ? "md"
+      : "sm";
 
   return (
     <Popup
